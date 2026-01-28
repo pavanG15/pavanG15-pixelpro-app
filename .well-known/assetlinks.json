@@ -1,0 +1,15 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls",
+      "delegate_permission/common.get_login_creds"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.pixelpro.app",
+      "sha256_cert_fingerprints": [
+        "44:C9:83:28:47:9D:48:85:9E:06:93:2B:90:FE:37:6C:68:EB:82:A0:D1:B7:62:03:C9:77:8D:4F:EC:C5:B0:07"
+      ]
+    }
+  }
+]
