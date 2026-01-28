@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+<title>FAQ – PixelPro</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+body{
+ margin:0;
+ font-family:Inter, sans-serif;
+ background:#0d0f27;
+ color:#e8e8f0;
+}
+
+/* NAVBAR */
+.navbar{
+ position:fixed;
+ top:0;
+ left:0;
+ width:100%;
+ height:56px;
+ background:rgba(10,10,30,0.72);
+ backdrop-filter:blur(12px);
+ border-bottom:1px solid rgba(255,255,255,0.08);
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ padding:0 20px;
+ z-index:999;
+}
+.nav-logo{
+ font-size:18px;
+ font-weight:600;
+ color:#4fb4ff;
+}
+.nav-links a{
+ color:#e0e0e0;
+ text-decoration:none;
+ margin-left:16px;
+ font-size:14px;
+ transition:0.25s;
+}
+.nav-links a:hover{
+ color:#4fb4ff;
+}
+
+/* PAGE BOX */
+.page-box{
+ max-width:900px;
+ margin:100px auto 40px auto;
+ background:rgba(255,255,255,0.04);
+ border-radius:18px;
+ padding:28px;
+ border:1px solid rgba(255,255,255,0.08);
+ box-shadow:0 8px 18px rgba(0,0,0,0.35);
+}
+
+h1{
+ margin-top:0;
+ color:#4fb4ff;
+}
+h2{
+ color:#4fb4ff;
+ margin-top:25px;
+}
+p, li{
+ line-height:1.6;
+ font-size:15px;
+ opacity:0.92;
+}
+
+/* FAQ SECTION */
+.faq-box{
+ margin-top:22px;
+ border-bottom:1px solid rgba(255,255,255,0.09);
+ padding-bottom:18px;
+}
+.faq-q{
+ font-weight:600;
+ font-size:16px;
+ margin-bottom:6px;
+}
+.faq-a{
+ font-size:15px;
+ opacity:0.85;
+}
+
+/* FOOTER */
+.footer{
+ text-align:center;
+ padding:35px 0 50px 0;
+ color:#888;
+ font-size:13px;
+}
+.footer a{
+ color:#4fb4ff;
+ text-decoration:none;
+}
+
+/* MOBILE */
+@media(max-width:600px){
+ .page-box{ margin:90px 16px 30px 16px; padding:22px; }
+ .nav-links a{ margin-left:10px; font-size:13px; }
+ .faq-q{ font-size:15px; }
+ .faq-a{ font-size:14px; }
+}
+</style>
+
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<div class="navbar">
+  <div class="nav-logo">⚡ PixelPro</div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="terms.html">Terms</a>
+    <a href="faq.html" style="color:#4fb4ff;font-weight:600;">FAQ</a>
+  </div>
+</div>
+
+
+<!-- ===== FAQ CONTENT ===== -->
+<div class="page-box">
+  <h1>Frequently Asked Questions (FAQ)</h1>
+
+  <div class="faq-box">
+    <div class="faq-q">📌 1. Does PixelPro upload my images?</div>
+    <div class="faq-a">No. PixelPro processes all images <b>locally on your device</b>. Nothing is uploaded or stored on servers.</div>
+  </div>
+
+  <div class="faq-box">
+    <div class="faq-q">📌 2. Is PixelPro free to use?</div>
+    <div class="faq-a">Yes, PixelPro is free. Optional ads or premium features may be added in the future.</div>
+  </div>
+
+  <div class="faq-box">
+    <div class="faq-q">📌 3. Why does image size sometimes increase?</div>
+    <div class="faq-a">When compressing <b>PNG</b> images, using high quality or very small images may increase size. For best results, use JPG format for photos.</div>
+  </div>
+
+  <div class="faq-box">
+    <div class="faq-q">📌 4. What file formats are supported?</div>
+    <div class="faq-a">PixelPro supports JPG, PNG, WEBP and more image formats depending on your device browser engine.</div>
+  </div>
+
+  <div class="faq-box">
+    <div class="faq-q">📌 5. Does PixelPro store any personal data?</div>
+    <div class="faq-a">No. PixelPro does not collect, store, track, or share any personal data.</div>
+  </div>
+
+  <div class="faq-box">
+    <div class="faq-q">📌 6. Can I use PixelPro offline?</div>
+    <div class="faq-a">Yes! Most features work fully offline because everything runs inside your device.</div>
+  </div>
+
+  <div class="faq-box">
+    <div class="faq-q">📌 7. I found a bug — how can I report it?</div>
+    <div class="faq-a">You can contact us anytime at  
+      <b style="color:#4fb4ff;">PVKodeWorks@proton.me</b>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ===== FOOTER ===== -->
+<div class="footer">
+  © 2026PVKodeWorks — All Rights Reserved  
+  <br><a href="privacy.html">Privacy Policy</a>
+</div>
+
+</body>
+</html>

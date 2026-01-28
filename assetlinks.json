@@ -1,0 +1,17 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls",
+      "delegate_permission/common.get_login_creds"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.pixelpro.app",
+      "sha256_cert_fingerprints": [
+        "DC:BB:FD:51:B7:78:1F:89:48:6E:60:BD:64:B0:73:67:E9:7B:2F:28:0B:E1:E1:B3:A9:9B:3C:E4:E0:CA:66:95",
+        "44:C9:83:28:47:9D:48:85:9E:06:93:2B:9E:F1:3E:77:C6:6E:8E:82:A0:01:87:62:03:C9:77:8D:4F:EC:C5:80",
+        "44:C9:83:28:47:9D:48:85:9E:06:93:2B:90:FE:37:6C:68:EB:82:A0:D1:B7:62:03:C9:77:8D:4F:EC:C5:B0:07"
+      ]
+    }
+  }
+]

@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#1fb6ff">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+<link rel="icon" href="/icons/icon-192.png" sizes="192x192" type="image/png">
+
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#1fb6ff">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>PixelPro</title>
+<!-- Google AdSense Verification -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7241214653338270"
+     crossorigin="anonymous"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" />
+
+<style>
+/* ===== FIXED LIGHT MODE (DAY MODE) ===== */
+body.light-mode {
+    --bg: #f0f2f5;                  /* Main background */
+    --bg-dark: #ffffff;             /* Card background */
+    --bg-light: #ffffff;            /* Upload box */
+    --card-bg: rgba(255, 255, 255, 0.9);
+    --card-dark: rgba(220, 220, 220, 0.8);
+
+    --primary: #0066ff;             /* Accent Blue */
+    --secondary: #888;              /* Sub text */
+
+    color: #333;                    /* Text Color */
+
+    background: linear-gradient(180deg, #e7ebf0, #ffffff) !important;
+}
+
+/* Cards in Light mode */
+body.light-mode .main-card {
+    background: var(--card-bg) !important;
+    color: #333 !important;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+/* Tool grid fixes */
+body.light-mode .tool-btn {
+    background: #ffffff !important;
+    border: 1px solid #ddd !important;
+    color: #333 !important;
+}
+
+/* Bottom navigation */
+body.light-mode .bottom-nav {
+    background: #ffffff !important;
+    border-top: 1px solid #ccc;
+}
+
+/* Navbar */
+body.light-mode .navbar {
+    background: #ffffffcc !important;
+    backdrop-filter: blur(10px);
+    color: #333 !important;
+}
+
+body.light-mode .navbar a {
+    color: #222 !important;
+}
+
+/* Inputs, dropdown */
+body.light-mode select,
+body.light-mode input[type="range"] {
+    background: #fff !important;
+    color: #222 !important;
+}
+
+/* Upload box */
+body.light-mode #dropZone {
+    background: #ffffff !important;
+    border: 2px dashed #bbb !important;
+    color: #222 !important;
+}
+
+/* ===== PixelPro TOP NAV (renamed to avoid conflict with bottom navbar) ===== */
+.top-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 56px;
+  background: rgba(10, 10, 30, 0.72);
+  backdrop-filter: blur(18px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 22px;
+  box-sizing: border-box;
+  z-index: 1000;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+
+.top-nav .nav-logo {
+  font-size: 18px;
+  font-weight: 600;
+  color: #4fb4ff;
+  letter-spacing: 0.5px;
+}
+
+.top-nav .nav-links a {
+  color: #e0e0e0;
+  text-decoration: none;
+  margin-left: 16px;
+  font-size: 14px;
+  transition: 0.25s;
+}
+
+.top-nav .nav-links a:hover { color: #4fb4ff; }
+
+/* Ensure content moves below top-nav */
+body { padding-top: 80px !important; }
+
+/* --- DESIGN SYSTEM --- */
+:root {
+    --bg-dark: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    --bg-light: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+    --card-dark: rgba(255, 255, 255, 0.05);
+    --card-light: rgba(255, 255, 255, 0.9);
+    --primary: #00d2ff;
+    --secondary: #3a7bd5;
+}
+
+body {
+    margin: 0; font-family: 'Segoe UI', sans-serif;
+    background: var(--bg-dark); color: white;
+    display: flex; flex-direction: column; align-items: center;
+    min-height: 100vh; padding-bottom: 90px; overflow-x: hidden;
+}
+body.light-mode { background: var(--bg-light); color: #333; }
+
+/* HEADER */
+.header { width: 90%; max-width: 400px; padding: 20px 0; display: flex; justify-content: space-between; align-items: center; }
+.brand { font-size: 22px; font-weight: 800; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+/* MAIN CARD */
+.main-card {
+    background: var(--card-dark); backdrop-filter: blur(20px);
+    width: 90%; max-width: 380px; padding: 20px;
+    border-radius: 24px; border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center;
+}
+body.light-mode .main-card { background: var(--card-light); color: #333; }
+
+/* PREVIEW AREA */
+#dropZone {
+    border: 2px dashed rgba(255,255,255,0.2); border-radius: 18px;
+    padding: 40px 20px; cursor: pointer; background: rgba(255,255,255,0.02);
+}
+.preview-container {
+    display: none; width: 100%; margin-bottom: 20px;
+    background: rgba(0,0,0,0.3); border-radius: 15px; 
+    overflow: hidden; border: 1px solid rgba(255,255,255,0.1);
+}
+#previewImage { display: block; max-width: 100%; max-height: 350px; margin: 0 auto; transition: 0.3s; }
+
+/* CONTROLS */
+.control-section { display: none; animation: fadeIn 0.3s ease; text-align: left; }
+.control-section.active { display: block; }
+@keyframes fadeIn { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:translateY(0); } }
+
+/* BUTTONS */
+.btn { width: 100%; padding: 12px; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; margin-bottom: 10px; font-size: 15px; }
+.btn-primary { background: linear-gradient(90deg, var(--primary), var(--secondary)); color: white; }
+.btn-outline { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: inherit; }
+.btn-danger { background: rgba(255, 82, 82, 0.2); border: 1px solid #ff5252; color: #ff5252; }
+
+.btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.tool-btn { background: rgba(255,255,255,0.1); padding: 15px; border-radius: 12px; text-align: center; cursor: pointer; border: 1px solid transparent; }
+.tool-btn:hover { background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.3); }
+
+/* INPUTS */
+input[type=number], input[type=range], select { 
+    width: 100%; margin-bottom: 10px; padding: 10px; 
+    border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); 
+    background: rgba(0,0,0,0.2); color: inherit; box-sizing: border-box;
+}
+
+/* SETTINGS LIST */
+.settings-list { text-align: left; list-style: none; padding: 0; margin: 0; }
+.settings-item { 
+    background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; 
+    margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;
+    cursor: pointer; border: 1px solid transparent;
+}
+.settings-item:hover { background: rgba(255,255,255,0.1); }
+.settings-item small { opacity: 0.6; display: block; font-size: 11px; margin-top: 2px; }
+
+/* CHECKBOX FIX */
+.checkbox-row {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 15px;
+    background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px;
+}
+input[type=checkbox] {
+    width: 20px; height: 20px; cursor: pointer; accent-color: var(--primary); margin: 0;
+}
+.checkbox-row label { cursor: pointer; font-size: 14px; }
+
+/* TOAST NOTIFICATION (New) */
+#toast {
+    visibility: hidden; min-width: 250px; background-color: #333; color: #fff; text-align: center;
+    border-radius: 50px; padding: 16px; position: fixed; z-index: 1000; left: 50%; bottom: 80px;
+    transform: translateX(-50%); font-size: 14px; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    opacity: 0; transition: opacity 0.5s, bottom 0.5s;
+}
+#toast.show { visibility: visible; opacity: 1; bottom: 100px; }
+body.light-mode #toast { background-color: #fff; color: #333; }
+
+/* NAVBAR (bottom mobile) */
+.navbar { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(15, 12, 41, 0.95); display: flex; justify-content: space-around; padding: 15px 0; border-top: 1px solid rgba(255,255,255,0.1); z-index: 100; }
+body.light-mode .navbar { background: rgba(255, 255, 255, 0.95); color: #333; }
+.nav-icon { opacity: 0.5; cursor: pointer; text-align: center; transition: 0.3s; }
+.nav-icon.active { opacity: 1; color: var(--primary); transform: translateY(-3px); }
+
+</style>
+<style>
+/* Mobile responsive fix added by assistant */
+@media (max-width: 900px) {
+  .main-box { max-width: 95% !important; width: 100% !important; margin: 80px auto 40px auto !important; padding: 18px !important; box-sizing: border-box !important; }
+  .main-card { max-width: 95% !important; margin: 20px auto !important; }
+  .header, .top-nav { padding-left: 12px; padding-right: 12px; }
+  .navbar { padding: 12px 6px; }
+}
+body { padding-top: 70px; }
+</style>
+
+<!-- Mobile & AdSense fixes (added by assistant) -->
+<style>
+/* Mobile & AdSense fixes (added by assistant) */
+body { padding-top: 70px; -webkit-font-smoothing:antialiased; }
+
+.main-box {
+  max-width: 980px;
+  margin: 40px auto;
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 900px) {
+  .main-box { max-width: 100%; margin: 12px auto; padding: 12px; }
+  .settings-section, .settings-list {
+    width: calc(100% - 28px) !important;
+    margin: 14px auto !important;
+    border-radius: 12px !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35) !important;
+    padding: 14px !important;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)) !important;
+  }
+  .settings-item {
+    padding: 14px 18px !important;
+    font-size: 15px !important;
+    display:flex; align-items:center; justify-content:space-between;
+    gap:12px;
+  }
+  .settings-item small { display:block; opacity:0.7; font-size:12px; }
+  .navbar { padding-bottom: env(safe-area-inset-bottom); }
+}
+
+.ad-slot {
+  width:100%;
+  max-width:100%;
+  display:block;
+  margin: 18px auto;
+  text-align:center;
+  min-height: 60px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.02));
+  border-radius: 10px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+}
+
+@media (min-width:901px) {
+  .ad-slot { min-height: 90px; }
+}
+
+.preview-box img, .preview-box canvas { max-width:100%; height:auto; display:block; margin:auto; }
+.ad-slot img { max-width:100%; height:auto; display:block; }
+</style>
+<!-- End Mobile & AdSense fixes -->
+
+</head>
+<body>
+
+<!-- TOP NAV inserted INSIDE <body> -->
+<nav class="top-nav">
+  <div class="nav-logo">⚡ PixelPro</div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="terms.html">Terms</a>
+    <a href="faq.html">FAQ</a>
+  </div>
+</nav>
+<div class="main-box">
+
+
+<div class="header">
+    <div class="brand">⚡ PixelPro</div>
+</div>
+
+<div class="main-card">
+<p style="text-align:center; color:#ccc; margin:15px auto; max-width:300px; font-size:14px; line-height:1.5;">
+PixelPro is a fast, secure and free image compression tool. All processing happens directly on your device, and nothing is uploaded or stored. Compress, resize and optimize your photos while keeping the best possible quality.
+</p>
+    
+    <div id="dropZone" onclick="document.getElementById('fileInput').click()">
+        <span style="font-size:40px;">📂</span>
+        <h3>Tap to Upload</h3>
+    </div>
+
+<!-- AdSense placeholder (assistant) -->
+<div class="ad-slot" id="adSlot1" aria-hidden="true">
+  <p style="color:rgba(255,255,255,0.45);padding:18px 6px;margin:0;font-size:14px;">
+    Advertisement area — will display responsive ad after AdSense approval.
+  </p>
+  <!--
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-XXXXXXXXXXXX"
+       data-ad-slot="YYYYYYYYY"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  -->
+</div>
+<!-- End AdSense placeholder -->
+
+    <input type="file" id="fileInput" accept="image/*" hidden />
+
+    <div id="previewBox" class="preview-container">
+        <img id="previewImage">
+    </div>
+
+    <div id="homeControls" class="control-section active">
+        <div class="btn-grid" style="margin-bottom:15px;">
+            <button id="btnStartCrop" class="btn btn-outline" style="background:#ff9800; border:none; color:white;" onclick="startCropping()">✂ Crop</button>
+            <button id="btnApplyCrop" class="btn btn-primary" style="background:#4caf50; display:none;" onclick="applyCrop()">✅ Apply</button>
+            <div style="text-align:center; font-size:12px; opacity:0.7; padding-top:10px;">
+                Orig: <span id="origSize">0MB</span> | New: <span id="newSize" style="color:var(--primary)">0MB</span>
+            </div>
+        </div>
+
+        <label>Quality: <span id="qualVal" style="color:var(--primary)">80%</span></label>
+        <input type="range" id="qualityRange" min="10" max="100" value="80" oninput="compressImage()">
+
+        <select id="formatSelect" onchange="compressImage()">
+            <option value="image/jpeg">JPG (Small Size)</option>
+            <option value="image/png">PNG (Best Quality)</option>
+            <option value="image/webp">WEBP (Modern)</option>
+        </select>
+
+        <button class="btn btn-primary" onclick="downloadImage()">⬇ Download Image</button>
+        
+        <div class="btn-grid">
+            <button class="btn btn-danger" onclick="resetToOriginal()">↺ Undo Edits</button>
+            <button class="btn btn-outline" onclick="location.reload()">➕ New File</button>
+        </div>
+    </div>
+
+    <div id="toolsMenu" class="control-section">
+        <h3 style="margin-top:0">Select Tool</h3>
+        <div class="btn-grid">
+            <div class="tool-btn" onclick="showPanel('resizePanel')">📐<br>Resize</div>
+            <div class="tool-btn" onclick="showPanel('filterPanel')">✨<br>Filters</div>
+            <div class="tool-btn" onclick="showPanel('rotatePanel')">🔄<br>Rotate</div>
+            <div class="tool-btn" onclick="showPanel('convertPanel')">🔁<br>Convert</div>
+        </div>
+        <br>
+        <button class="btn btn-danger" onclick="resetToOriginal()">↺ Reset Original Image</button>
+    </div>
+
+    <div id="settingsMenu" class="control-section">
+        <h3 style="margin-top:0">Settings</h3>
+        <p style="opacity:0.6; font-size:13px; margin-bottom:20px;">App Preferences & Info</p>
+        <div class="settings-list">
+            <div class="settings-item" onclick="document.body.classList.toggle('light-mode')"><div><span>🌗 Appearance</span><small>Switch Light/Dark Mode</small></div><span>></span></div>
+            <div class="settings-item"><div><span>👨‍💻 Developer</span><small>PVKodeWorks@proton.me</small></div></div>
+            <div class="settings-item"><div><span>📱 Version</span><small>v1.0.0 (Stable)</small></div></div>
+            <div class="settings-item" onclick="window.location.href='mailto:PVKodeWorks@proton.me'"><div><span>📧 Contact Support</span><small>PVKodeWorks@proton.me</small></div><span>></span></div>
+        </div>
+    </div>
+
+    <div id="resizePanel" class="control-section">
+        <button class="btn btn-outline" style="width:auto; padding:5px 15px;" onclick="showPanel('toolsMenu')">← Back</button>
+        <h3>Resize</h3>
+        <input type="number" id="resizeW" placeholder="Width" oninput="calcH()">
+        <input type="number" id="resizeH" placeholder="Height" oninput="calcW()">
+        <div class="checkbox-row" onclick="document.getElementById('aspectRatio').click()">
+            <input type="checkbox" id="aspectRatio" checked onclick="event.stopPropagation()">
+            <label for="aspectRatio">Maintain Aspect Ratio</label>
+        </div>
+        <button class="btn btn-primary" onclick="applyResize()">✅ Apply Resize</button>
+    </div>
+    <div id="filterPanel" class="control-section">
+        <button class="btn btn-outline" style="width:auto; padding:5px 15px;" onclick="showPanel('toolsMenu')">← Back</button>
+        <h3>Filters</h3>
+        <div class="btn-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+            <div class="tool-btn" onclick="applyFilter('grayscale(1)')">B&W</div>
+            <div class="tool-btn" onclick="applyFilter('sepia(1)')">Vintage</div>
+            <div class="tool-btn" onclick="applyFilter('contrast(1.5)')">Dark</div>
+            <div class="tool-btn" onclick="applyFilter('brightness(1.2)')">Bright</div>
+            <div class="tool-btn" onclick="applyFilter('invert(1)')">Invert</div>
+            <div class="tool-btn" onclick="applyFilter('none')">Normal</div>
+        </div>
+    </div>
+    <div id="rotatePanel" class="control-section">
+        <button class="btn btn-outline" style="width:auto; padding:5px 15px;" onclick="showPanel('toolsMenu')">← Back</button>
+        <h3>Rotate</h3>
+        <div class="btn-grid">
+            <button class="btn btn-outline" onclick="rotateImg(-90)">↺ Left</button>
+            <button class="btn btn-outline" onclick="rotateImg(90)">↻ Right</button>
+        </div>
+        <button class="btn btn-primary" onclick="saveRotation()">✅ Apply Rotation</button>
+        <button class="btn btn-outline" style="margin-top:10px" onclick="resetRotation()">Reset Angle</button>
+    </div>
+    <div id="convertPanel" class="control-section">
+        <button class="btn btn-outline" style="width:auto; padding:5px 15px;" onclick="showPanel('toolsMenu')">← Back</button>
+        <h3>Converter</h3>
+        <p>Save as different format:</p>
+        <button class="btn btn-outline" onclick="quickConvert('image/png')">Save as PNG</button>
+        <button class="btn btn-outline" onclick="quickConvert('image/jpeg')">Save as JPG</button>
+        <button class="btn btn-outline" onclick="quickConvert('image/webp')">Save as WEBP</button>
+    </div>
+
+</div>
+
+<div id="toast">Image Saved Successfully!</div>
+
+<!-- BOTTOM navbar (mobile) - keep as-is -->
+<div class="navbar">
+    <div class="nav-icon active" onclick="switchTab('home')">🏠<br><span style="font-size:10px">Home</span></div>
+    <div class="nav-icon" onclick="switchTab('tools')">✨<br><span style="font-size:10px">Edit</span></div>
+    <div class="nav-icon" onclick="switchTab('settings')">⚙️<br><span style="font-size:10px">Settings</span></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+
+<script>
+/* (JS unchanged) */
+const fileInput = document.getElementById('fileInput');
+const preview = document.getElementById('previewImage');
+let originalFile = null; 
+let cropper = null;
+let currentBlob = null;
+let currentRotation = 0;
+
+// 1. UPLOAD
+fileInput.onchange = (e) => {
+    if(e.target.files[0]) {
+        originalFile = e.target.files[0]; 
+        loadPreview(originalFile);
+    }
+};
+
+function loadPreview(file) {
+    document.getElementById('origSize').innerText = (file.size/1024/1024).toFixed(2) + "MB";
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+        preview.src = evt.target.result;
+        document.getElementById('dropZone').style.display = 'none';
+        document.getElementById('previewBox').style.display = 'block';
+        resetInternalStates();
+        setTimeout(compressImage, 500);
+    };
+    reader.readAsDataURL(file);
+}
+
+// 2. RESET
+function resetToOriginal() {
+    if(!originalFile) return;
+    if(confirm("Undo all edits and go back to original?")) {
+        loadPreview(originalFile);
+        switchTab('home');
+    }
+}
+
+function resetInternalStates() {
+    currentRotation = 0;
+    preview.style.transform = 'none';
+    preview.style.filter = 'none';
+    if(cropper) { cropper.destroy(); cropper = null; }
+    document.getElementById('btnStartCrop').style.display='block';
+    document.getElementById('btnApplyCrop').style.display='none';
+}
+
+// 3. TABS
+function switchTab(tab) {
+    document.querySelectorAll('.nav-icon').forEach(el => el.classList.remove('active'));
+    try { event.currentTarget.classList.add('active'); } catch(e){}
+    document.querySelectorAll('.control-section').forEach(el => el.classList.remove('active'));
+
+    if(tab === 'home') document.getElementById('homeControls').classList.add('active');
+    if(tab === 'tools') document.getElementById('toolsMenu').classList.add('active');
+    if(tab === 'settings') document.getElementById('settingsMenu').classList.add('active');
+}
+
+function showPanel(id) {
+    document.querySelectorAll('.control-section').forEach(el => el.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    if(id === 'resizePanel') {
+        const img = new Image(); img.src = preview.src;
+        img.onload = () => {
+            document.getElementById('resizeW').value = img.width;
+            document.getElementById('resizeH').value = img.height;
+        }
+    }
+}
+
+// 4. CORE FEATURES
+function compressImage() {
+    if(cropper) return;
+    const q = parseInt(document.getElementById('qualityRange').value)/100;
+    const fmt = document.getElementById('formatSelect').value;
+    document.getElementById('qualVal').innerText = Math.round(q*100) + "%";
+
+    processCanvas((ctx, cvs, img) => {
+        cvs.width = img.width; cvs.height = img.height;
+        ctx.drawImage(img, 0, 0);
+    }, fmt, q, false);
+}
+
+function processCanvas(drawFn, format='image/jpeg', quality=0.8, updatePreview=true) {
+    const cvs = document.createElement('canvas');
+    const ctx = cvs.getContext('2d');
+    const img = new Image();
+    img.src = preview.src;
+    img.onload = () => {
+        drawFn(ctx, cvs, img);
+        cvs.toBlob(blob => {
+            currentBlob = blob;
+            document.getElementById('newSize').innerText = (blob.size/1024/1024).toFixed(2) + "MB";
+            if(updatePreview) {
+                preview.src = URL.createObjectURL(blob);
+                resetInternalStates(); 
+            }
+        }, format, quality);
+    }
+}
+
+// 5. TOOLS
+function startCropping() {
+    if(cropper) return;
+    cropper = new Cropper(preview, { viewMode:1, autoCropArea:0.8 });
+    document.getElementById('btnStartCrop').style.display='none';
+    document.getElementById('btnApplyCrop').style.display='block';
+}
+function applyCrop() {
+    preview.src = cropper.getCroppedCanvas().toDataURL();
+    resetInternalStates();
+    compressImage();
+}
+
+function applyResize() {
+    const w = document.getElementById('resizeW').value;
+    const h = document.getElementById('resizeH').value;
+    processCanvas((ctx, cvs, img) => {
+        cvs.width = w; cvs.height = h;
+        ctx.drawImage(img, 0, 0, w, h);
+    });
+    showToast("Resized Successfully!"); showPanel('toolsMenu');
+}
+
+function applyFilter(filter) {
+    processCanvas((ctx, cvs, img) => {
+        cvs.width = img.width; cvs.height = img.height;
+        ctx.filter = filter;
+        ctx.drawImage(img, 0, 0);
+    });
+    showToast("Filter Applied!");
+}
+
+function rotateImg(deg) { currentRotation += deg; preview.style.transform = `rotate(${currentRotation}deg)`; }
+function resetRotation() { currentRotation = 0; preview.style.transform = 'none'; }
+function saveRotation() {
+    const img = new Image(); img.src = preview.src;
+    img.onload = () => {
+        const cvs = document.createElement('canvas');
+        const ctx = cvs.getContext('2d');
+        if(currentRotation % 180 !== 0) { cvs.width=img.height; cvs.height=img.width; }
+        else { cvs.width=img.width; cvs.height=img.height; }
+        
+        ctx.translate(cvs.width/2, cvs.height/2);
+        ctx.rotate(currentRotation * Math.PI/180);
+        ctx.drawImage(img, -img.width/2, -img.height/2);
+        preview.src = cvs.toDataURL();
+        resetInternalStates(); showPanel('toolsMenu');
+    }
+    showToast("Rotation Applied!");
+}
+
+function quickConvert(fmt) {
+    const link = document.createElement('a');
+    const ext = fmt.split('/')[1];
+    link.download = "converted." + ext;
+    const img = new Image(); img.src = preview.src;
+    img.onload = () => {
+        const cvs = document.createElement('canvas'); cvs.width = img.width; cvs.height = img.height;
+        const ctx = cvs.getContext('2d'); ctx.drawImage(img, 0, 0);
+        link.href = cvs.toDataURL(fmt, 0.9);
+        document.body.appendChild(link); link.click(); document.body.removeChild(link);
+        showToast("Converted & Saved!");
+        
+        // Signal Kodular for Ad
+        if (window.AppInventor) { window.AppInventor.setWebViewString("show_ad"); }
+    }
+}
+
+// --- MAIN DOWNLOAD + AD TRIGGER + TOAST ---
+function downloadImage() {
+    if(!currentBlob) return;
+    
+    // 1. Show Notification
+    showToast("Downloading Image...");
+
+    // 2. Trigger Download
+    const reader = new FileReader();
+    reader.readAsDataURL(currentBlob);
+    reader.onloadend = function() {
+        const base64data = reader.result;
+        const link = document.createElement('a');
+        link.href = base64data;
+        const fmt = document.getElementById('formatSelect').value;
+        let ext = 'jpg';
+        if (fmt === 'image/png') ext = 'png';
+        if (fmt === 'image/webp') ext = 'webp';
+        link.download = "pixelpro_edit." + ext;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        // 3. Update Toast
+        setTimeout(() => { showToast("Image Saved to Gallery!"); }, 1000);
+    }
+
+    // 4. SIGNAL KODULAR TO SHOW AD
+    // This sends "show_ad" text to Kodular
+    if (window.AppInventor) {
+        window.AppInventor.setWebViewString("show_ad");
+    }
+}
+
+// TOAST FUNCTION
+function showToast(msg) {
+    const x = document.getElementById("toast");
+    x.innerText = msg;
+    x.className = "show";
+    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+}
+
+function calcH() { if(document.getElementById('aspectRatio').checked) {
+    const img=document.getElementById('previewImage');
+    document.getElementById('resizeH').value = Math.round(document.getElementById('resizeW').value * (img.naturalHeight/img.naturalWidth));
+}}
+function calcW() { if(document.getElementById('aspectRatio').checked) {
+    const img=document.getElementById('previewImage');
+    document.getElementById('resizeW').value = Math.round(document.getElementById('resizeH').value * (img.naturalWidth/img.naturalHeight));
+}}
+</script>
+
+</div>
+
+<!-- Assistant: settings mobile helper -->
+<script>
+(function(){
+  const settingsBtn = document.querySelector('.nav-btn.settings') || document.querySelector('.nav-btn:last-child');
+  if(settingsBtn){
+    settingsBtn.addEventListener('click', (e) => {
+      const settingsEl = document.querySelector('.settings-section') || document.querySelector('.settings-list') || document.querySelector('#settings');
+      if(settingsEl){
+        settingsEl.scrollIntoView({behavior: 'smooth', block: 'center'});
+      }
+    });
+  }
+})();
+</script>
+
+<script src="/register-sw.js"></script>
+
+</script>
+
+<!-- End assistant JS -->
+
+
+</body>
+</html>
