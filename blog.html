@@ -5,35 +5,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog - PixelPro Image Compressor</title>
     <style>
+        /* General Body Styles */
         body {
             margin: 0;
             padding: 0;
             background-color: #0f172a; /* Dark Blue Background */
             color: #ffffff;
-            font-family: sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
         }
+
+        /* NEW Universal Navbar Styles */
         nav {
             background-color: #1e293b;
             padding: 15px 20px;
+            border-bottom: 1px solid #334155;
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #334155;
         }
-        .logo { font-size: 1.5rem; font-weight: bold; color: #3b82f6; text-decoration: none; }
-        .menu a {
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #3b82f6;
+            text-decoration: none;
+        }
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
             color: #cbd5e1;
             text-decoration: none;
-            margin-left: 15px;
             font-size: 0.95rem;
+            transition: color 0.3s;
         }
-        .menu a:hover { color: #ffffff; }
+        .nav-links a:hover {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+
+        /* Blog Container */
         .container {
             max-width: 900px;
+            width: 95%; /* Mobile Friendly */
             margin: 40px auto;
             padding: 20px;
+            box-sizing: border-box;
         }
-        h1 { border-bottom: 2px solid #3b82f6; padding-bottom: 10px; margin-bottom: 30px; }
+
+        h1 { 
+            border-bottom: 2px solid #3b82f6; 
+            padding-bottom: 10px; 
+            margin-bottom: 30px; 
+            color: #60a5fa;
+        }
         
         /* Blog Card Style */
         .blog-card {
@@ -42,36 +70,55 @@
             border-radius: 10px;
             padding: 25px;
             margin-bottom: 25px;
-            transition: transform 0.2s;
+            transition: transform 0.2s, border-color 0.2s;
         }
-        .blog-card:hover { transform: translateY(-5px); border-color: #3b82f6; }
-        .blog-title { margin-top: 0; color: #60a5fa; }
-        .blog-excerpt { color: #94a3b8; line-height: 1.6; }
+        .blog-card:hover { 
+            transform: translateY(-5px); 
+            border-color: #3b82f6; 
+        }
+        .blog-title { 
+            margin-top: 0; 
+            color: #ffffff; 
+            font-size: 1.5rem;
+        }
+        .blog-excerpt { 
+            color: #cbd5e1; 
+            line-height: 1.6; 
+            margin-bottom: 20px;
+        }
         .read-more {
             display: inline-block;
-            margin-top: 15px;
             color: #ffffff;
             background-color: #2563eb;
-            padding: 8px 15px;
+            padding: 10px 20px;
             text-decoration: none;
             border-radius: 5px;
             font-size: 0.9rem;
+            font-weight: bold;
+        }
+        .read-more:hover {
+            background-color: #1d4ed8;
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 600px) {
+            nav { flex-direction: column; align-items: flex-start; }
+            .nav-links { margin-top: 15px; gap: 15px; }
+            .blog-card { padding: 20px; }
+            .blog-title { font-size: 1.3rem; }
         }
     </style>
 </head>
 <body>
 
     <nav>
-        <a href="index.html" class="logo">⚡ PixelPro</a>
-        <nav class="top-nav">
-  <div class="nav-logo">⚡ PixelPro</div>
-  <div class="nav-links">
-    <a href="index.html">Home</a>
-    <a href="about.html">About</a>
-    <a href="blog.html" style="margin-left: 15px; color: #cbd5e1; text-decoration: none;">Blog</a>
-    <a href="privacy.html">Privacy</a>
-    <a href="terms.html">Terms</a>
-    <a href="faq.html">FAQ</a>
+        <a href="index.html" class="nav-logo">⚡ PixelPro</a>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="blog.html" style="color: #60a5fa;">Blog</a>
+            <a href="about.html">About</a>
+            <a href="privacy.html">Privacy</a>
+            <a href="faq.html">FAQ</a>
         </div>
     </nav>
 
@@ -91,7 +138,7 @@
             <p class="blog-excerpt">
                 Choosing the right image format is crucial. JPG is great for photos, PNG for transparent graphics, and WEBP for modern web performance. Let's compare them...
             </p>
-           <a href="article2.html" class="read-more">Read More</a>
+            <a href="article2.html" class="read-more">Read More</a>
         </div>
 
         <div class="blog-card">
