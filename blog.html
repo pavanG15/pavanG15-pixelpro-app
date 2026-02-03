@@ -1,1 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - PixelPro Image Compressor</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0f172a; /* Dark Blue Background */
+            color: #ffffff;
+            font-family: sans-serif;
+        }
+        nav {
+            background-color: #1e293b;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #334155;
+        }
+        .logo { font-size: 1.5rem; font-weight: bold; color: #3b82f6; text-decoration: none; }
+        .menu a {
+            color: #cbd5e1;
+            text-decoration: none;
+            margin-left: 15px;
+            font-size: 0.95rem;
+        }
+        .menu a:hover { color: #ffffff; }
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+        h1 { border-bottom: 2px solid #3b82f6; padding-bottom: 10px; margin-bottom: 30px; }
+        
+        /* Blog Card Style */
+        .blog-card {
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            transition: transform 0.2s;
+        }
+        .blog-card:hover { transform: translateY(-5px); border-color: #3b82f6; }
+        .blog-title { margin-top: 0; color: #60a5fa; }
+        .blog-excerpt { color: #94a3b8; line-height: 1.6; }
+        .read-more {
+            display: inline-block;
+            margin-top: 15px;
+            color: #ffffff;
+            background-color: #2563eb;
+            padding: 8px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
 
+    <nav>
+        <a href="index.html" class="logo">⚡ PixelPro</a>
+        <nav class="top-nav">
+  <div class="nav-logo">⚡ PixelPro</div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="blog.html" style="margin-left: 15px; color: #cbd5e1; text-decoration: none;">Blog</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="terms.html">Terms</a>
+    <a href="faq.html">FAQ</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Latest Articles</h1>
+
+        <div class="blog-card">
+            <h2 class="blog-title">How to Reduce Image Size for Website Speed?</h2>
+            <p class="blog-excerpt">
+                Images often take up the most bandwidth on a website. Learn how compressing images can make your website load 3x faster and improve your SEO rankings instantly...
+            </p>
+            <a href="#" class="read-more">Read More (Coming Soon)</a>
+        </div>
+
+        <div class="blog-card">
+            <h2 class="blog-title">JPG vs PNG vs WEBP: Which Format is Best?</h2>
+            <p class="blog-excerpt">
+                Choosing the right image format is crucial. JPG is great for photos, PNG for transparent graphics, and WEBP for modern web performance. Let's compare them...
+            </p>
+            <a href="#" class="read-more">Read More (Coming Soon)</a>
+        </div>
+
+        <div class="blog-card">
+            <h2 class="blog-title">5 Free Tools to Optimize Images for SEO</h2>
+            <p class="blog-excerpt">
+                Apart from PixelPro, there are several ways to ensure your images are SEO ready. Check out this list of best practices for alt text and file naming...
+            </p>
+            <a href="#" class="read-more">Read More (Coming Soon)</a>
+        </div>
+
+    </div>
+
+</body>
+</html>
