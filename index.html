@@ -1,447 +1,324 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-     <meta charset="UTF-8">
-     <meta name="google-site-verification" content="Af8c3A0SDBrRoVdnSKqoCfzrAvhi89ekfc5qj1-yLu4" />
-<link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#1fb6ff">
-<link rel="apple-touch-icon" href="/icons/icon-192.png">
-<link rel="icon" href="/icons/icon-192.png" sizes="192x192" type="image/png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <title>PixelPro - Free Online Image Compressor & Resizer</title>
+    
+    <meta name="description" content="PixelPro is a free, fast, and secure online image compressor. Reduce image file sizes in seconds without losing quality. Works entirely in your browser with no uploads.">
+    <meta name="keywords" content="image compressor, reduce image size, optimize images, WebP converter, crop image online, free image resizer">
+    <meta name="robots" content="index, follow">
+    
+    <meta name="google-site-verification" content="Af8c3A0SDBrRoVdnSKqoCfzrAvhi89ekfc5qj1-yLu4" />
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#1fb6ff">
+    <link rel="apple-touch-icon" href="/icons/icon-192.png">
+    <link rel="icon" href="/icons/icon-192.png" sizes="192x192" type="image/png">
 
-<link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#1fb6ff">
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<title>PixelPro</title>
-<!-- Google AdSense Verification -->
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7241214653338270"
-     crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7241214653338270" crossorigin="anonymous"></script>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" />
 
-<style>
-/* ===== FIXED LIGHT MODE (DAY MODE) ===== */
-body.light-mode {
-    --bg: #f0f2f5;                  /* Main background */
-    --bg-dark: #ffffff;             /* Card background */
-    --bg-light: #ffffff;            /* Upload box */
-    --card-bg: rgba(255, 255, 255, 0.9);
-    --card-dark: rgba(220, 220, 220, 0.8);
+    <style>
+        /* ===== FIXED LIGHT MODE (DAY MODE) ===== */
+        body.light-mode {
+            --bg: #f0f2f5;                  
+            --bg-dark: #ffffff;             
+            --bg-light: #ffffff;            
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --card-dark: rgba(220, 220, 220, 0.8);
+            --primary: #0066ff;             
+            --secondary: #888;              
+            color: #333;                    
+            background: linear-gradient(180deg, #e7ebf0, #ffffff) !important;
+        }
 
-    --primary: #0066ff;             /* Accent Blue */
-    --secondary: #888;              /* Sub text */
+        body.light-mode .main-card { background: var(--card-bg) !important; color: #333 !important; box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
+        body.light-mode .tool-btn { background: #ffffff !important; border: 1px solid #ddd !important; color: #333 !important; }
+        body.light-mode .bottom-nav { background: #ffffff !important; border-top: 1px solid #ccc; }
+        body.light-mode .navbar { background: #ffffffcc !important; backdrop-filter: blur(10px); color: #333 !important; }
+        body.light-mode .navbar a { color: #222 !important; }
+        body.light-mode select, body.light-mode input[type="range"] { background: #fff !important; color: #222 !important; }
+        body.light-mode #dropZone { background: #ffffff !important; border: 2px dashed #bbb !important; color: #222 !important; }
 
-    color: #333;                    /* Text Color */
+        /* ===== PixelPro TOP NAV ===== */
+        .top-nav {
+            position: fixed; top: 0; left: 0; width: 100%; height: 56px;
+            background: rgba(10, 10, 30, 0.72); backdrop-filter: blur(18px);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 22px; box-sizing: border-box; z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+        }
+        .top-nav .nav-logo { font-size: 18px; font-weight: 600; color: #4fb4ff; letter-spacing: 0.5px; }
+        .top-nav .nav-links a { color: #e0e0e0; text-decoration: none; margin-left: 16px; font-size: 14px; transition: 0.25s; }
+        .top-nav .nav-links a:hover { color: #4fb4ff; }
 
-    background: linear-gradient(180deg, #e7ebf0, #ffffff) !important;
-}
+        /* --- DESIGN SYSTEM --- */
+        :root {
+            --bg-dark: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            --bg-light: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            --card-dark: rgba(255, 255, 255, 0.05);
+            --card-light: rgba(255, 255, 255, 0.9);
+            --primary: #00d2ff;
+            --secondary: #3a7bd5;
+        }
 
-/* Cards in Light mode */
-body.light-mode .main-card {
-    background: var(--card-bg) !important;
-    color: #333 !important;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-}
+        body {
+            margin: 0; font-family: 'Segoe UI', sans-serif;
+            background: var(--bg-dark); color: white;
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh; padding-bottom: 90px; overflow-x: hidden; padding-top: 80px;
+        }
+        
+        .header { width: 90%; max-width: 400px; padding: 20px 0; display: flex; justify-content: space-between; align-items: center; }
+        .brand { font-size: 22px; font-weight: 800; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-/* Tool grid fixes */
-body.light-mode .tool-btn {
-    background: #ffffff !important;
-    border: 1px solid #ddd !important;
-    color: #333 !important;
-}
+        /* MAIN CARD */
+        .main-card {
+            background: var(--card-dark); backdrop-filter: blur(20px);
+            width: 90%; max-width: 380px; padding: 20px;
+            border-radius: 24px; border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center;
+        }
+        
+        #dropZone { border: 2px dashed rgba(255,255,255,0.2); border-radius: 18px; padding: 40px 20px; cursor: pointer; background: rgba(255,255,255,0.02); }
+        .preview-container { display: none; width: 100%; margin-bottom: 20px; background: rgba(0,0,0,0.3); border-radius: 15px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
+        #previewImage { display: block; max-width: 100%; max-height: 350px; margin: 0 auto; transition: 0.3s; }
 
-/* Bottom navigation */
-body.light-mode .bottom-nav {
-    background: #ffffff !important;
-    border-top: 1px solid #ccc;
-}
+        /* CONTROLS */
+        .control-section { display: none; animation: fadeIn 0.3s ease; text-align: left; }
+        .control-section.active { display: block; }
+        @keyframes fadeIn { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:translateY(0); } }
 
-/* Navbar */
-body.light-mode .navbar {
-    background: #ffffffcc !important;
-    backdrop-filter: blur(10px);
-    color: #333 !important;
-}
+        /* BUTTONS */
+        .btn { width: 100%; padding: 12px; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; margin-bottom: 10px; font-size: 15px; }
+        .btn-primary { background: linear-gradient(90deg, var(--primary), var(--secondary)); color: white; }
+        .btn-outline { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: inherit; }
+        .btn-danger { background: rgba(255, 82, 82, 0.2); border: 1px solid #ff5252; color: #ff5252; }
+        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .tool-btn { background: rgba(255,255,255,0.1); padding: 15px; border-radius: 12px; text-align: center; cursor: pointer; border: 1px solid transparent; }
+        .tool-btn:hover { background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.3); }
 
-body.light-mode .navbar a {
-    color: #222 !important;
-}
+        /* INPUTS */
+        input[type=number], input[type=range], select { width: 100%; margin-bottom: 10px; padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.2); color: inherit; box-sizing: border-box; }
 
-/* Inputs, dropdown */
-body.light-mode select,
-body.light-mode input[type="range"] {
-    background: #fff !important;
-    color: #222 !important;
-}
+        /* SETTINGS LIST */
+        .settings-list { text-align: left; list-style: none; padding: 0; margin: 0; }
+        .settings-item { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; border: 1px solid transparent; }
+        .settings-item:hover { background: rgba(255,255,255,0.1); }
+        .settings-item small { opacity: 0.6; display: block; font-size: 11px; margin-top: 2px; }
 
-/* Upload box */
-body.light-mode #dropZone {
-    background: #ffffff !important;
-    border: 2px dashed #bbb !important;
-    color: #222 !important;
-}
+        .checkbox-row { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px; }
+        input[type=checkbox] { width: 20px; height: 20px; cursor: pointer; accent-color: var(--primary); margin: 0; }
+        .checkbox-row label { cursor: pointer; font-size: 14px; }
 
-/* ===== PixelPro TOP NAV (renamed to avoid conflict with bottom navbar) ===== */
-.top-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 56px;
-  background: rgba(10, 10, 30, 0.72);
-  backdrop-filter: blur(18px);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 22px;
-  box-sizing: border-box;
-  z-index: 1000;
-  border-bottom: 1px solid rgba(255,255,255,0.07);
-}
+        #toast { visibility: hidden; min-width: 250px; background-color: #333; color: #fff; text-align: center; border-radius: 50px; padding: 16px; position: fixed; z-index: 1000; left: 50%; bottom: 80px; transform: translateX(-50%); font-size: 14px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); opacity: 0; transition: opacity 0.5s, bottom 0.5s; }
+        #toast.show { visibility: visible; opacity: 1; bottom: 100px; }
+        body.light-mode #toast { background-color: #fff; color: #333; }
 
-.top-nav .nav-logo {
-  font-size: 18px;
-  font-weight: 600;
-  color: #4fb4ff;
-  letter-spacing: 0.5px;
-}
+        /* NAVBAR (bottom mobile) */
+        .navbar { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(15, 12, 41, 0.95); display: flex; justify-content: space-around; padding: 15px 0; border-top: 1px solid rgba(255,255,255,0.1); z-index: 100; }
+        body.light-mode .navbar { background: rgba(255, 255, 255, 0.95); color: #333; }
+        .nav-icon { opacity: 0.5; cursor: pointer; text-align: center; transition: 0.3s; }
+        .nav-icon.active { opacity: 1; color: var(--primary); transform: translateY(-3px); }
 
-.top-nav .nav-links a {
-  color: #e0e0e0;
-  text-decoration: none;
-  margin-left: 16px;
-  font-size: 14px;
-  transition: 0.25s;
-}
+        /* Mobile responsive fix */
+        .main-box { max-width: 980px; margin: 20px auto; padding: 18px; box-sizing: border-box; }
+        
+        @media (max-width: 900px) {
+            .main-box { max-width: 100%; margin: 12px auto; padding: 12px; }
+            .settings-section, .settings-list { width: calc(100% - 28px) !important; margin: 14px auto !important; border-radius: 12px !important; box-shadow: 0 10px 30px rgba(0,0,0,0.35) !important; padding: 14px !important; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)) !important; }
+            .settings-item { padding: 14px 18px !important; font-size: 15px !important; display:flex; align-items:center; justify-content:space-between; gap:12px; }
+            .settings-item small { display:block; opacity:0.7; font-size:12px; }
+            .navbar { padding-bottom: env(safe-area-inset-bottom); }
+        }
 
-.top-nav .nav-links a:hover { color: #4fb4ff; }
-
-/* Ensure content moves below top-nav */
-body { padding-top: 80px !important; }
-
-/* --- DESIGN SYSTEM --- */
-:root {
-    --bg-dark: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-    --bg-light: linear-gradient(135deg, #f5f7fa, #c3cfe2);
-    --card-dark: rgba(255, 255, 255, 0.05);
-    --card-light: rgba(255, 255, 255, 0.9);
-    --primary: #00d2ff;
-    --secondary: #3a7bd5;
-}
-
-body {
-    margin: 0; font-family: 'Segoe UI', sans-serif;
-    background: var(--bg-dark); color: white;
-    display: flex; flex-direction: column; align-items: center;
-    min-height: 100vh; padding-bottom: 90px; overflow-x: hidden;
-}
-body.light-mode { background: var(--bg-light); color: #333; }
-
-/* HEADER */
-.header { width: 90%; max-width: 400px; padding: 20px 0; display: flex; justify-content: space-between; align-items: center; }
-.brand { font-size: 22px; font-weight: 800; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-
-/* MAIN CARD */
-.main-card {
-    background: var(--card-dark); backdrop-filter: blur(20px);
-    width: 90%; max-width: 380px; padding: 20px;
-    border-radius: 24px; border: 1px solid rgba(255,255,255,0.1);
-    box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center;
-}
-body.light-mode .main-card { background: var(--card-light); color: #333; }
-
-/* PREVIEW AREA */
-#dropZone {
-    border: 2px dashed rgba(255,255,255,0.2); border-radius: 18px;
-    padding: 40px 20px; cursor: pointer; background: rgba(255,255,255,0.02);
-}
-.preview-container {
-    display: none; width: 100%; margin-bottom: 20px;
-    background: rgba(0,0,0,0.3); border-radius: 15px; 
-    overflow: hidden; border: 1px solid rgba(255,255,255,0.1);
-}
-#previewImage { display: block; max-width: 100%; max-height: 350px; margin: 0 auto; transition: 0.3s; }
-
-/* CONTROLS */
-.control-section { display: none; animation: fadeIn 0.3s ease; text-align: left; }
-.control-section.active { display: block; }
-@keyframes fadeIn { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:translateY(0); } }
-
-/* BUTTONS */
-.btn { width: 100%; padding: 12px; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; margin-bottom: 10px; font-size: 15px; }
-.btn-primary { background: linear-gradient(90deg, var(--primary), var(--secondary)); color: white; }
-.btn-outline { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: inherit; }
-.btn-danger { background: rgba(255, 82, 82, 0.2); border: 1px solid #ff5252; color: #ff5252; }
-
-.btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.tool-btn { background: rgba(255,255,255,0.1); padding: 15px; border-radius: 12px; text-align: center; cursor: pointer; border: 1px solid transparent; }
-.tool-btn:hover { background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.3); }
-
-/* INPUTS */
-input[type=number], input[type=range], select { 
-    width: 100%; margin-bottom: 10px; padding: 10px; 
-    border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); 
-    background: rgba(0,0,0,0.2); color: inherit; box-sizing: border-box;
-}
-
-/* SETTINGS LIST */
-.settings-list { text-align: left; list-style: none; padding: 0; margin: 0; }
-.settings-item { 
-    background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; 
-    margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;
-    cursor: pointer; border: 1px solid transparent;
-}
-.settings-item:hover { background: rgba(255,255,255,0.1); }
-.settings-item small { opacity: 0.6; display: block; font-size: 11px; margin-top: 2px; }
-
-/* CHECKBOX FIX */
-.checkbox-row {
-    display: flex; align-items: center; gap: 10px; margin-bottom: 15px;
-    background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px;
-}
-input[type=checkbox] {
-    width: 20px; height: 20px; cursor: pointer; accent-color: var(--primary); margin: 0;
-}
-.checkbox-row label { cursor: pointer; font-size: 14px; }
-
-/* TOAST NOTIFICATION (New) */
-#toast {
-    visibility: hidden; min-width: 250px; background-color: #333; color: #fff; text-align: center;
-    border-radius: 50px; padding: 16px; position: fixed; z-index: 1000; left: 50%; bottom: 80px;
-    transform: translateX(-50%); font-size: 14px; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    opacity: 0; transition: opacity 0.5s, bottom 0.5s;
-}
-#toast.show { visibility: visible; opacity: 1; bottom: 100px; }
-body.light-mode #toast { background-color: #fff; color: #333; }
-
-/* NAVBAR (bottom mobile) */
-.navbar { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(15, 12, 41, 0.95); display: flex; justify-content: space-around; padding: 15px 0; border-top: 1px solid rgba(255,255,255,0.1); z-index: 100; }
-body.light-mode .navbar { background: rgba(255, 255, 255, 0.95); color: #333; }
-.nav-icon { opacity: 0.5; cursor: pointer; text-align: center; transition: 0.3s; }
-.nav-icon.active { opacity: 1; color: var(--primary); transform: translateY(-3px); }
-
-</style>
-<style>
-/* Mobile responsive fix added by assistant */
-@media (max-width: 900px) {
-  .main-box { max-width: 95% !important; width: 100% !important; margin: 80px auto 40px auto !important; padding: 18px !important; box-sizing: border-box !important; }
-  .main-card { max-width: 95% !important; margin: 20px auto !important; }
-  .header, .top-nav { padding-left: 12px; padding-right: 12px; }
-  .navbar { padding: 12px 6px; }
-}
-body { padding-top: 70px; }
-</style>
-
-<!-- Mobile & AdSense fixes (added by assistant) -->
-<style>
-/* Mobile & AdSense fixes (added by assistant) */
-body { padding-top: 70px; -webkit-font-smoothing:antialiased; }
-
-.main-box {
-  max-width: 980px;
-  margin: 40px auto;
-  padding: 18px;
-  box-sizing: border-box;
-}
-
-@media (max-width: 900px) {
-  .main-box { max-width: 100%; margin: 12px auto; padding: 12px; }
-  .settings-section, .settings-list {
-    width: calc(100% - 28px) !important;
-    margin: 14px auto !important;
-    border-radius: 12px !important;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.35) !important;
-    padding: 14px !important;
-    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)) !important;
-  }
-  .settings-item {
-    padding: 14px 18px !important;
-    font-size: 15px !important;
-    display:flex; align-items:center; justify-content:space-between;
-    gap:12px;
-  }
-  .settings-item small { display:block; opacity:0.7; font-size:12px; }
-  .navbar { padding-bottom: env(safe-area-inset-bottom); }
-}
-
-.ad-slot {
-  width:100%;
-  max-width:100%;
-  display:block;
-  margin: 18px auto;
-  text-align:center;
-  min-height: 60px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.02));
-  border-radius: 10px;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
-}
-
-@media (min-width:901px) {
-  .ad-slot { min-height: 90px; }
-}
-
-.preview-box img, .preview-box canvas { max-width:100%; height:auto; display:block; margin:auto; }
-.ad-slot img { max-width:100%; height:auto; display:block; }
-</style>
-<!-- End Mobile & AdSense fixes -->
-
+        .ad-slot { width:100%; max-width:100%; display:block; margin: 18px auto; text-align:center; min-height: 60px; background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.02)); border-radius: 10px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.02); }
+        @media (min-width:901px) { .ad-slot { min-height: 90px; } }
+        .preview-box img, .preview-box canvas { max-width:100%; height:auto; display:block; margin:auto; }
+        
+        /* Content Section Styles for SEO */
+        .seo-content { max-width: 800px; width: 95%; margin: 40px auto 80px auto; padding: 30px; background: rgba(30, 41, 59, 0.5); border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); color: #e2e8f0; line-height: 1.8; }
+        body.light-mode .seo-content { background: #ffffff; border: 1px solid #e2e8f0; color: #334155; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .seo-content h2 { color: #60a5fa; font-size: 1.8rem; border-bottom: 2px solid #3b82f6; padding-bottom: 10px; margin-top: 0; }
+        body.light-mode .seo-content h2 { color: #2563eb; }
+        .seo-content h3 { color: #ffffff; margin-top: 30px; font-size: 1.3rem; }
+        body.light-mode .seo-content h3 { color: #1e293b; }
+        .seo-content p { margin-bottom: 20px; font-size: 1.05rem; }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 30px; margin-bottom: 30px; }
+        .feature-box { background: rgba(0,0,0,0.2); padding: 20px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); }
+        body.light-mode .feature-box { background: #f8fafc; border: 1px solid #e2e8f0; }
+    </style>
 </head>
 <body>
 
-<!-- TOP NAV inserted INSIDE <body> -->
 <nav class="top-nav">
   <div class="nav-logo">⚡ PixelPro</div>
   <div class="nav-links">
     <a href="index.html">Home</a>
     <a href="about.html">About</a>
-    <a href="blog.html" style="margin-left: 15px; color: #cbd5e1; text-decoration: none;">Blog</a>
+    <a href="blog.html">Blog</a>
     <a href="privacy.html">Privacy</a>
     <a href="terms.html">Terms</a>
     <a href="faq.html">FAQ</a>
-       
   </div>
-    </p>
-
-</section>
-
 </nav>
 
 <div class="main-box">
 
+    <div class="main-card">
+        <p style="text-align:center; color:#ccc; margin:0 auto 20px auto; max-width:300px; font-size:14px; line-height:1.5;">
+            Fast, secure, and free image compression. Processing happens directly on your device. Nothing is uploaded or stored.
+        </p>
+        
+        <div id="dropZone" onclick="document.getElementById('fileInput').click()">
+            <span style="font-size:40px;">📂</span>
+            <h3>Tap to Upload Image</h3>
+        </div>
 
-<div class="header">
-    <div class="brand">⚡ PixelPro</div>
-</div>
+        <div class="ad-slot" id="adSlot1" aria-hidden="true">
+            <p style="color:rgba(255,255,255,0.45);padding:18px 6px;margin:0;font-size:14px;">
+                Advertisement area — will display responsive ad after AdSense approval.
+            </p>
+        </div>
 
-<div class="main-card">
-<p style="text-align:center; color:#ccc; margin:15px auto; max-width:300px; font-size:14px; line-height:1.5;">
-PixelPro is a fast, secure and free image compression tool. All processing happens directly on your device, and nothing is uploaded or stored. Compress, resize and optimize your photos while keeping the best possible quality.
-</p>
-    
-    <div id="dropZone" onclick="document.getElementById('fileInput').click()">
-        <span style="font-size:40px;">📂</span>
-        <h3>Tap to Upload</h3>
-    </div>
+        <input type="file" id="fileInput" accept="image/*" hidden />
 
-<!-- AdSense placeholder (assistant) -->
-<div class="ad-slot" id="adSlot1" aria-hidden="true">
-  <p style="color:rgba(255,255,255,0.45);padding:18px 6px;margin:0;font-size:14px;">
-    Advertisement area — will display responsive ad after AdSense approval.
-  </p>
-  <!--
-  <ins class="adsbygoogle"
-       style="display:block"
-       data-ad-client="ca-pub-XXXXXXXXXXXX"
-       data-ad-slot="YYYYYYYYY"
-       data-ad-format="auto"
-       data-full-width-responsive="true"></ins>
-  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-  -->
-</div>
-<!-- End AdSense placeholder -->
+        <div id="previewBox" class="preview-container">
+            <img id="previewImage" alt="Image preview area">
+        </div>
 
-    <input type="file" id="fileInput" accept="image/*" hidden />
+        <div id="homeControls" class="control-section active">
+            <div class="btn-grid" style="margin-bottom:15px;">
+                <button id="btnStartCrop" class="btn btn-outline" style="background:#ff9800; border:none; color:white;" onclick="startCropping()">✂ Crop</button>
+                <button id="btnApplyCrop" class="btn btn-primary" style="background:#4caf50; display:none;" onclick="applyCrop()">✅ Apply</button>
+                <div style="text-align:center; font-size:12px; opacity:0.7; padding-top:10px;">
+                    Orig: <span id="origSize">0MB</span> | New: <span id="newSize" style="color:var(--primary)">0MB</span>
+                </div>
+            </div>
 
-    <div id="previewBox" class="preview-container">
-        <img id="previewImage">
-    </div>
+            <label>Quality: <span id="qualVal" style="color:var(--primary)">80%</span></label>
+            <input type="range" id="qualityRange" min="10" max="100" value="80" oninput="compressImage()">
 
-    <div id="homeControls" class="control-section active">
-        <div class="btn-grid" style="margin-bottom:15px;">
-            <button id="btnStartCrop" class="btn btn-outline" style="background:#ff9800; border:none; color:white;" onclick="startCropping()">✂ Crop</button>
-            <button id="btnApplyCrop" class="btn btn-primary" style="background:#4caf50; display:none;" onclick="applyCrop()">✅ Apply</button>
-            <div style="text-align:center; font-size:12px; opacity:0.7; padding-top:10px;">
-                Orig: <span id="origSize">0MB</span> | New: <span id="newSize" style="color:var(--primary)">0MB</span>
+            <select id="formatSelect" onchange="compressImage()">
+                <option value="image/jpeg">JPG (Small Size)</option>
+                <option value="image/png">PNG (Best Quality)</option>
+                <option value="image/webp">WEBP (Modern Web Standard)</option>
+            </select>
+
+            <button class="btn btn-primary" onclick="downloadImage()">⬇ Download Image</button>
+            
+            <div class="btn-grid">
+                <button class="btn btn-danger" onclick="resetToOriginal()">↺ Undo Edits</button>
+                <button class="btn btn-outline" onclick="location.reload()">➕ New File</button>
             </div>
         </div>
 
-        <label>Quality: <span id="qualVal" style="color:var(--primary)">80%</span></label>
-        <input type="range" id="qualityRange" min="10" max="100" value="80" oninput="compressImage()">
+        <div id="toolsMenu" class="control-section">
+            <h3 style="margin-top:0">Select Editing Tool</h3>
+            <div class="btn-grid">
+                <div class="tool-btn" onclick="showPanel('resizePanel')">📐<br>Resize</div>
+                <div class="tool-btn" onclick="showPanel('filterPanel')">✨<br>Filters</div>
+                <div class="tool-btn" onclick="showPanel('rotatePanel')">🔄<br>Rotate</div>
+                <div class="tool-btn" onclick="showPanel('convertPanel')">🔁<br>Convert</div>
+            </div>
+            <br>
+            <button class="btn btn-danger" onclick="resetToOriginal()">↺ Reset Original Image</button>
+        </div>
 
-        <select id="formatSelect" onchange="compressImage()">
-            <option value="image/jpeg">JPG (Small Size)</option>
-            <option value="image/png">PNG (Best Quality)</option>
-            <option value="image/webp">WEBP (Modern)</option>
-        </select>
+        <div id="settingsMenu" class="control-section">
+            <h3 style="margin-top:0">Settings</h3>
+            <p style="opacity:0.6; font-size:13px; margin-bottom:20px;">App Preferences & Info</p>
+            <div class="settings-list">
+                <div class="settings-item" onclick="document.body.classList.toggle('light-mode')"><div><span>🌗 Appearance</span><small>Switch Light/Dark Mode</small></div><span>></span></div>
+                <div class="settings-item"><div><span>👨‍💻 Developer</span><small>PVKodeWorks</small></div></div>
+                <div class="settings-item"><div><span>📱 Version</span><small>v1.0.0 (Stable)</small></div></div>
+                <div class="settings-item" onclick="window.location.href='mailto:PVKodeWorks@proton.me'"><div><span>📧 Contact Support</span><small>PVKodeWorks@proton.me</small></div><span>></span></div>
+            </div>
+        </div>
 
-        <button class="btn btn-primary" onclick="downloadImage()">⬇ Download Image</button>
-        
-        <div class="btn-grid">
-            <button class="btn btn-danger" onclick="resetToOriginal()">↺ Undo Edits</button>
-            <button class="btn btn-outline" onclick="location.reload()">➕ New File</button>
+        <div id="resizePanel" class="control-section">
+            <button class="btn btn-outline" style="width:auto; padding:5px 15px;" onclick="showPanel('toolsMenu')">← Back</button>
+            <h3>Resize Dimensions</h3>
+            <input type="number" id="resizeW" placeholder="Width" oninput="calcH()">
+            <input type="number" id="resizeH" placeholder="Height" oninput="calcW()">
+            <div class="checkbox-row" onclick="document.getElementById('aspectRatio').click()">
+                <input type="checkbox" id="aspectRatio" checked onclick="event.stopPropagation()">
+                <label for="aspectRatio">Maintain Aspect Ratio</label>
+            </div>
+            <button class="btn btn-primary" onclick="applyResize()">✅ Apply Resize</button>
+        </div>
+        <div id="filterPanel" class="control-section">
+            <button class="btn btn-outline" style="width:auto; padding:5px 15px;" onclick="showPanel('toolsMenu')">← Back</button>
+            <h3>Image Filters</h3>
+            <div class="btn-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+                <div class="tool-btn" onclick="applyFilter('grayscale(1)')">B&W</div>
+                <div class="tool-btn" onclick="applyFilter('sepia(1)')">Vintage</div>
+                <div class="tool-btn" onclick="applyFilter('contrast(1.5)')">Dark</div>
+                <div class="tool-btn" onclick="applyFilter('brightness(1.2)')">Bright</div>
+                <div class="tool-btn" onclick="applyFilter('invert(1)')">Invert</div>
+                <div class="tool-btn" onclick="applyFilter('none')">Normal</div>
+            </div>
+        </div>
+        <div id="rotatePanel" class="control-section">
+            <button class="btn btn-outline" style="width:auto; padding:5px 15px;" onclick="showPanel('toolsMenu')">← Back</button>
+            <h3>Rotate Image</h3>
+            <div class="btn-grid">
+                <button class="btn btn-outline" onclick="rotateImg(-90)">↺ Left</button>
+                <button class="btn btn-outline" onclick="rotateImg(90)">↻ Right</button>
+            </div>
+            <button class="btn btn-primary" onclick="saveRotation()">✅ Apply Rotation</button>
+            <button class="btn btn-outline" style="margin-top:10px" onclick="resetRotation()">Reset Angle</button>
+        </div>
+        <div id="convertPanel" class="control-section">
+            <button class="btn btn-outline" style="width:auto; padding:5px 15px;" onclick="showPanel('toolsMenu')">← Back</button>
+            <h3>Format Converter</h3>
+            <p>Save directly as a different format:</p>
+            <button class="btn btn-outline" onclick="quickConvert('image/png')">Save as PNG</button>
+            <button class="btn btn-outline" onclick="quickConvert('image/jpeg')">Save as JPG</button>
+            <button class="btn btn-outline" onclick="quickConvert('image/webp')">Save as WEBP</button>
         </div>
     </div>
-
-    <div id="toolsMenu" class="control-section">
-        <h3 style="margin-top:0">Select Tool</h3>
-        <div class="btn-grid">
-            <div class="tool-btn" onclick="showPanel('resizePanel')">📐<br>Resize</div>
-            <div class="tool-btn" onclick="showPanel('filterPanel')">✨<br>Filters</div>
-            <div class="tool-btn" onclick="showPanel('rotatePanel')">🔄<br>Rotate</div>
-            <div class="tool-btn" onclick="showPanel('convertPanel')">🔁<br>Convert</div>
-        </div>
-        <br>
-        <button class="btn btn-danger" onclick="resetToOriginal()">↺ Reset Original Image</button>
-    </div>
-
-    <div id="settingsMenu" class="control-section">
-        <h3 style="margin-top:0">Settings</h3>
-        <p style="opacity:0.6; font-size:13px; margin-bottom:20px;">App Preferences & Info</p>
-        <div class="settings-list">
-            <div class="settings-item" onclick="document.body.classList.toggle('light-mode')"><div><span>🌗 Appearance</span><small>Switch Light/Dark Mode</small></div><span>></span></div>
-            <div class="settings-item"><div><span>👨‍💻 Developer</span><small>PVKodeWorks@proton.me</small></div></div>
-            <div class="settings-item"><div><span>📱 Version</span><small>v1.0.0 (Stable)</small></div></div>
-            <div class="settings-item" onclick="window.location.href='mailto:PVKodeWorks@proton.me'"><div><span>📧 Contact Support</span><small>PVKodeWorks@proton.me</small></div><span>></span></div>
-        </div>
-    </div>
-
-    <div id="resizePanel" class="control-section">
-        <button class="btn btn-outline" style="width:auto; padding:5px 15px;" onclick="showPanel('toolsMenu')">← Back</button>
-        <h3>Resize</h3>
-        <input type="number" id="resizeW" placeholder="Width" oninput="calcH()">
-        <input type="number" id="resizeH" placeholder="Height" oninput="calcW()">
-        <div class="checkbox-row" onclick="document.getElementById('aspectRatio').click()">
-            <input type="checkbox" id="aspectRatio" checked onclick="event.stopPropagation()">
-            <label for="aspectRatio">Maintain Aspect Ratio</label>
-        </div>
-        <button class="btn btn-primary" onclick="applyResize()">✅ Apply Resize</button>
-    </div>
-    <div id="filterPanel" class="control-section">
-        <button class="btn btn-outline" style="width:auto; padding:5px 15px;" onclick="showPanel('toolsMenu')">← Back</button>
-        <h3>Filters</h3>
-        <div class="btn-grid" style="grid-template-columns: 1fr 1fr 1fr;">
-            <div class="tool-btn" onclick="applyFilter('grayscale(1)')">B&W</div>
-            <div class="tool-btn" onclick="applyFilter('sepia(1)')">Vintage</div>
-            <div class="tool-btn" onclick="applyFilter('contrast(1.5)')">Dark</div>
-            <div class="tool-btn" onclick="applyFilter('brightness(1.2)')">Bright</div>
-            <div class="tool-btn" onclick="applyFilter('invert(1)')">Invert</div>
-            <div class="tool-btn" onclick="applyFilter('none')">Normal</div>
-        </div>
-    </div>
-    <div id="rotatePanel" class="control-section">
-        <button class="btn btn-outline" style="width:auto; padding:5px 15px;" onclick="showPanel('toolsMenu')">← Back</button>
-        <h3>Rotate</h3>
-        <div class="btn-grid">
-            <button class="btn btn-outline" onclick="rotateImg(-90)">↺ Left</button>
-            <button class="btn btn-outline" onclick="rotateImg(90)">↻ Right</button>
-        </div>
-        <button class="btn btn-primary" onclick="saveRotation()">✅ Apply Rotation</button>
-        <button class="btn btn-outline" style="margin-top:10px" onclick="resetRotation()">Reset Angle</button>
-    </div>
-    <div id="convertPanel" class="control-section">
-        <button class="btn btn-outline" style="width:auto; padding:5px 15px;" onclick="showPanel('toolsMenu')">← Back</button>
-        <h3>Converter</h3>
-        <p>Save as different format:</p>
-        <button class="btn btn-outline" onclick="quickConvert('image/png')">Save as PNG</button>
-        <button class="btn btn-outline" onclick="quickConvert('image/jpeg')">Save as JPG</button>
-        <button class="btn btn-outline" onclick="quickConvert('image/webp')">Save as WEBP</button>
-    </div>
-
 </div>
 
-<div id="toast">Image Saved Successfully!</div>
+<div id="toast">Action Successful!</div>
 
-<!-- BOTTOM navbar (mobile) - keep as-is -->
+<section class="seo-content">
+    <h2>The Ultimate Free Online Image Compressor Tool</h2>
+    <p>
+        Welcome to <strong>PixelPro</strong>, your all-in-one solution for optimizing, compressing, and editing images directly in your web browser. Whether you are a web developer looking to improve your site's Core Web Vitals, a photographer managing portfolio sizes, or simply someone trying to save storage space on your smartphone, our tool provides professional-grade compression without costing you a dime.
+    </p>
+
+    <div class="feature-grid">
+        <div class="feature-box">
+            <h3 style="margin-top:0; color:#60a5fa;">🔒 100% Private & Secure</h3>
+            <p>Unlike other image compressors that upload your personal photos to remote servers, PixelPro uses advanced HTML5 Canvas technology. <strong>All processing happens locally on your device.</strong> Your images never leave your computer or phone, guaranteeing absolute privacy and eliminating slow upload times.</p>
+        </div>
+        <div class="feature-box">
+            <h3 style="margin-top:0; color:#60a5fa;">📉 Maximum Compression</h3>
+            <p>High-resolution photos can easily exceed 5MB to 10MB in size. With our smart lossy and lossless compression algorithms, you can reduce image file sizes by up to 80% while retaining crystal-clear visual quality. Use our intuitive quality slider to find the perfect balance between file size and sharpness.</p>
+        </div>
+    </div>
+
+    <h3>Why Do You Need to Compress Images?</h3>
+    <ul style="padding-left: 20px;">
+        <li><strong>Boost Website Speed & SEO:</strong> Search engines like Google prioritize fast-loading websites. Heavy, unoptimized images are the #1 cause of slow page speeds. Compressing your images reduces bandwidth usage and drastically improves your search engine rankings.</li>
+        <li><strong>Save Device Storage:</strong> Free up gigabytes of space on your iPhone, Android, or hard drive by shrinking your photo library without deleting your memories.</li>
+        <li><strong>Bypass Email & Social Media Limits:</strong> Many platforms like Discord, Gmail, and WhatsApp have strict file size limits (often 8MB to 25MB). PixelPro allows you to easily shrink your files to share them without errors.</li>
+    </ul>
+
+    <h3>Supported Next-Gen Formats</h3>
+    <p>We support all major image formats to ensure compatibility across the web:</p>
+    <ul style="padding-left: 20px;">
+        <li><strong>JPEG (JPG):</strong> The standard format for photography. Excellent for complex color profiles and achieving the smallest possible file size.</li>
+        <li><strong>PNG:</strong> Best for graphics, logos, and images that require a transparent background. Uses lossless compression to maintain sharp text and edges.</li>
+        <li><strong>WEBP:</strong> The modern web standard developed by Google. WebP provides superior compression compared to JPEG and PNG, making it the ultimate choice for modern web developers looking to fix "Serve images in next-gen formats" warnings.</li>
+    </ul>
+
+    <h3>More Than Just Compression</h3>
+    <p>PixelPro isn't just an image reducer. We've built in a suite of lightweight editing tools to perfect your photos before you download them. Use our built-in <strong>Cropper</strong> to frame your subjects perfectly. Need specific dimensions? Our <strong>Image Resizer</strong> allows you to scale images by exact pixel width and height while maintaining the aspect ratio. You can also apply quick vintage filters, convert between file formats, and rotate images with a single click.</p>
+</section>
+
 <div class="navbar">
     <div class="nav-icon active" onclick="switchTab('home')">🏠<br><span style="font-size:10px">Home</span></div>
     <div class="nav-icon" onclick="switchTab('tools')">✨<br><span style="font-size:10px">Edit</span></div>
@@ -449,9 +326,7 @@ PixelPro is a fast, secure and free image compression tool. All processing happe
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
-
 <script>
-/* (JS unchanged) */
 const fileInput = document.getElementById('fileInput');
 const preview = document.getElementById('previewImage');
 let originalFile = null; 
@@ -459,7 +334,6 @@ let cropper = null;
 let currentBlob = null;
 let currentRotation = 0;
 
-// 1. UPLOAD
 fileInput.onchange = (e) => {
     if(e.target.files[0]) {
         originalFile = e.target.files[0]; 
@@ -480,7 +354,6 @@ function loadPreview(file) {
     reader.readAsDataURL(file);
 }
 
-// 2. RESET
 function resetToOriginal() {
     if(!originalFile) return;
     if(confirm("Undo all edits and go back to original?")) {
@@ -498,7 +371,6 @@ function resetInternalStates() {
     document.getElementById('btnApplyCrop').style.display='none';
 }
 
-// 3. TABS
 function switchTab(tab) {
     document.querySelectorAll('.nav-icon').forEach(el => el.classList.remove('active'));
     try { event.currentTarget.classList.add('active'); } catch(e){}
@@ -521,7 +393,6 @@ function showPanel(id) {
     }
 }
 
-// 4. CORE FEATURES
 function compressImage() {
     if(cropper) return;
     const q = parseInt(document.getElementById('qualityRange').value)/100;
@@ -552,7 +423,6 @@ function processCanvas(drawFn, format='image/jpeg', quality=0.8, updatePreview=t
     }
 }
 
-// 5. TOOLS
 function startCropping() {
     if(cropper) return;
     cropper = new Cropper(preview, { viewMode:1, autoCropArea:0.8 });
@@ -606,7 +476,7 @@ function saveRotation() {
 function quickConvert(fmt) {
     const link = document.createElement('a');
     const ext = fmt.split('/')[1];
-    link.download = "converted." + ext;
+    link.download = "pixelpro." + ext;
     const img = new Image(); img.src = preview.src;
     img.onload = () => {
         const cvs = document.createElement('canvas'); cvs.width = img.width; cvs.height = img.height;
@@ -614,20 +484,13 @@ function quickConvert(fmt) {
         link.href = cvs.toDataURL(fmt, 0.9);
         document.body.appendChild(link); link.click(); document.body.removeChild(link);
         showToast("Converted & Saved!");
-        
-        // Signal Kodular for Ad
         if (window.AppInventor) { window.AppInventor.setWebViewString("show_ad"); }
     }
 }
 
-// --- MAIN DOWNLOAD + AD TRIGGER + TOAST ---
 function downloadImage() {
     if(!currentBlob) return;
-    
-    // 1. Show Notification
     showToast("Downloading Image...");
-
-    // 2. Trigger Download
     const reader = new FileReader();
     reader.readAsDataURL(currentBlob);
     reader.onloadend = function() {
@@ -638,23 +501,15 @@ function downloadImage() {
         let ext = 'jpg';
         if (fmt === 'image/png') ext = 'png';
         if (fmt === 'image/webp') ext = 'webp';
-        link.download = "pixelpro_edit." + ext;
+        link.download = "pixelpro_optimized." + ext;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-
-        // 3. Update Toast
-        setTimeout(() => { showToast("Image Saved to Gallery!"); }, 1000);
+        setTimeout(() => { showToast("Image Saved!"); }, 1000);
     }
-
-    // 4. SIGNAL KODULAR TO SHOW AD
-    // This sends "show_ad" text to Kodular
-    if (window.AppInventor) {
-        window.AppInventor.setWebViewString("show_ad");
-    }
+    if (window.AppInventor) { window.AppInventor.setWebViewString("show_ad"); }
 }
 
-// TOAST FUNCTION
 function showToast(msg) {
     const x = document.getElementById("toast");
     x.innerText = msg;
@@ -672,57 +527,12 @@ function calcW() { if(document.getElementById('aspectRatio').checked) {
 }}
 </script>
 
-</div>
-<section style="max-width: 800px; width: 95%; margin: 30px auto; padding: 20px; color: #e0e0e0; font-family: sans-serif; line-height: 1.6; box-sizing: border-box;">
-    
-    <h2 style="color: #ffffff; border-bottom: 2px solid #3b82f6; padding-bottom: 10px; margin-bottom: 20px; font-size: 1.5rem;">
-        Best Free Online Image Compressor Tool
-    </h2>
-    <p>
-        PixelPro is the ultimate <strong>free online image compressor</strong> that allows you to reduce image size without losing quality. 
-        Whether you are a web developer, photographer, or social media content creator, our tool helps you optimize your images for faster loading speeds and better storage management.
-    </p>
-
-    <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 30px;">
-        <div style="flex: 1; min-width: 250px; background: #1e1e2e; padding: 20px; border-radius: 10px; border: 1px solid #333;">
-            <h3 style="color: #60a5fa; margin-top: 0;">⚡ Fast & Secure</h3>
-            <p>All image compression happens locally in your browser. No files are uploaded to any server, ensuring 100% privacy and lightning-fast processing speed.</p>
-        </div>
-        <div style="flex: 1; min-width: 250px; background: #1e1e2e; padding: 20px; border-radius: 10px; border: 1px solid #333;">
-            <h3 style="color: #60a5fa; margin-top: 0;">📉 High Compression</h3>
-            <p>Reduce image size by up to 80% while maintaining visible quality. Perfect for optimizing images for websites, blogs, and email attachments.</p>
-        </div>
-    </div>
-
-    <h3 style="color: #ffffff; margin-top: 40px;">Why Compress Images?</h3>
-    <ul style="list-style-type: disc; padding-left: 20px; margin-bottom: 30px;">
-        <li><strong>Improve Website Speed:</strong> Smaller images load faster, improving your website's SEO ranking and user experience.</li>
-        <li><strong>Save Storage Space:</strong> Compressed images take up less space on your phone or computer.</li>
-        <li><strong>Easy Sharing:</strong> Share high-quality photos on WhatsApp, Email, or Slack without hitting file size limits.</li>
-    </ul>
-
-    <h3 style="color: #ffffff;">How to Use PixelPro?</h3>
-    <p>Using PixelPro is simple and effective:</p>
-    <ol style="padding-left: 20px;">
-        <li>Click on the <strong>"Tap to Upload"</strong> button or drag and drop your image.</li>
-        <li>The tool will automatically analyze and compress your image.</li>
-        <li>Adjust the <strong>Quality Slider</strong> if you need a specific file size.</li>
-        <li>Click <strong>"Download Image"</strong> to save the optimized file instantly.</li>
-    </ol>
-
-    <p style="margin-top: 30px; font-size: 0.9em; color: #888;">
-        Supported Formats: JPG, PNG, WEBP, and more. <br>
-        PixelPro is completely free to use with no hidden charges.
-    </p>
-
-</section>
-<!-- Assistant: settings mobile helper -->
 <script>
 (function(){
   const settingsBtn = document.querySelector('.nav-btn.settings') || document.querySelector('.nav-btn:last-child');
   if(settingsBtn){
     settingsBtn.addEventListener('click', (e) => {
-      const settingsEl = document.querySelector('.settings-section') || document.querySelector('.settings-list') || document.querySelector('#settings');
+      const settingsEl = document.querySelector('.settings-section') || document.querySelector('.settings-list') || document.querySelector('#settingsMenu');
       if(settingsEl){
         settingsEl.scrollIntoView({behavior: 'smooth', block: 'center'});
       }
@@ -732,11 +542,5 @@ function calcW() { if(document.getElementById('aspectRatio').checked) {
 </script>
 
 <script src="/register-sw.js"></script>
-
-</script>
-
-<!-- End assistant JS -->
-
-<script src="https://pl28877334.effectivegatecpm.com/e8/6b/87/e86b87822d13d2aa57fcb780e12e8479.js"></script>
 </body>
 </html>
